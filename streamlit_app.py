@@ -1,16 +1,13 @@
 import streamlit as st
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI 
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableBranch
 from langchain.prompts import PromptTemplate
 import os
 
-
 os.environ["OPENAI_API_KEY"] = st.secrets["OpenAIkey"]
 
-
-llm = OpenAI(openai_api_key="your_openai_api_key", model="gpt-4")  # Replace with your API key
-
+llm = OpenAI(openai_api_key=st.secrets["OpenAIkey"], model="gpt-4")
 
 sentiment_template = """Analyze the sentiment of this feedback:
 '{feedback}'
@@ -26,9 +23,10 @@ Only respond with "airline fault" or "external factors".
 sentiment_chain = PromptTemplate.from_template(sentiment_template) | llm
 cause_chain = PromptTemplate.from_template(cause_template) | llm
 
-positive_response = PromptTemplate("Thank you for choosing our airline! We're glad you had a good experience.") | llm
-airline_fault_response = PromptTemplate("We apologize for the inconvenience. Our customer service team will contact you soon to resolve the issue.") | llm
-external_factors_response = PromptTemplate("We’re sorry for your experience. Unfortunately, the airline is not liable for events outside of our control.") | llm
+
+positive_response = PromptTemplate.from_template("Thank you for choosing our airline! We're glad you had a good experience.") | llm
+airline_fault_response = PromptTemplate.from_template("We apologize for the inconvenience. Our customer service team will contact you soon to resolve the issue.") | llm
+external_factors_response = PromptTemplate.from_template("We’re sorry for your experience. Unfortunately, the airline is not liable for events outside of our control.") | llm
 
 feedback_branch = RunnableBranch(
     (lambda x: "positive" in x["sentiment"].lower(), positive_response),
@@ -38,7 +36,7 @@ feedback_branch = RunnableBranch(
 
 full_chain = {"sentiment": sentiment_chain, "cause": cause_chain, "feedback": lambda x: x["feedback"]} | feedback_branch
 
-# Streamlit app setup
+
 st.title("Airline Feedback App")
 st.header("Share with us your experience of the latest trip:")
 
