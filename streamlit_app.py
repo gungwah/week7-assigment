@@ -20,8 +20,8 @@ cause_template = """If the experience is negative, determine the cause:
 Only respond with "airline fault" or "external factors".
 """
 
-sentiment_chain = PromptTemplate.from_template(sentiment_template) | llm
-cause_chain = PromptTemplate.from_template(cause_template) | llm
+sentiment_chain = PromptTemplate.from_template(sentiment_template) | llm | StrOutputParser()
+cause_chain = PromptTemplate.from_template(cause_template) | llm | StrOutputParser()
 
 
 positive_response = PromptTemplate.from_template("Thank you for choosing our airline! We're glad you had a good experience.") | llm
