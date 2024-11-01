@@ -7,7 +7,7 @@ import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets["OpenAIkey"]
 
-llm = OpenAI(openai_api_key=st.secrets["OpenAIkey"], model="gpt-4")
+llm = OpenAI(openai_api_key=st.secrets["OpenAIkey"], model="gpt-4o-mini")
 
 sentiment_template = """Analyze the sentiment of this feedback:
 '{feedback}'
