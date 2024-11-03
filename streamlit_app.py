@@ -6,7 +6,7 @@ from langchain_core.runnables import RunnableBranch
 from langchain.prompts import PromptTemplate
 import os
 
-langchain.debug = True
+langchain.debug = True #i deploy this app on my local so that i can see the result of each chain whether it performs as expected or no
 
 os.environ["OPENAI_API_KEY"] = st.secrets["OpenAIkey"]
 
